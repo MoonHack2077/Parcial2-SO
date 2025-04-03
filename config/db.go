@@ -15,6 +15,8 @@ var DB *mongo.Database
 func ConectarDB() {
 	mongoURI := os.Getenv("MONGO_URI")
 	dbName := os.Getenv("MONGO_DB")
+	fmt.Println("MONGO_URI:", mongoURI)
+fmt.Println("DB Name:", dbName)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
