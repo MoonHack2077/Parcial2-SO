@@ -56,3 +56,17 @@ func ActualizarTarea(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"mensaje": "Tarea actualizada correctamente"})
 }
 
+func EliminarTarea(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+
+	err := services.EliminarTarea(id)
+	if err != nil {
+		http.Error(w, "No se pudo eliminar la tarea", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"mensaje": "Tarea eliminada correctamente"})
+}
+

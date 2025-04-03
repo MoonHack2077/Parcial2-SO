@@ -18,3 +18,7 @@ func ObtenerTareas() ([]models.Tarea, error) {
 func ActualizarTarea(id string, tarea models.Tarea) error {
 	return repositories.ActualizarTarea(id, tarea)
 }
+
+func EliminarTarea(id string) error {
+	return repositories.EliminarTarea(id)
+}

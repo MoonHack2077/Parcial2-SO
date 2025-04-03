@@ -29,6 +29,7 @@ func main() {
 	router.HandleFunc("/tareas", controllers.CrearTarea).Methods("POST")
 	router.HandleFunc("/tareas", controllers.ObtenerTareas).Methods("GET")
 	router.HandleFunc("/tareas/{id}", controllers.ActualizarTarea).Methods("PUT")
+	router.HandleFunc("/tareas/{id}", controllers.EliminarTarea).Methods("DELETE")
 
 
 	// Ruta raíz de prueba
