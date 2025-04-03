@@ -28,6 +28,8 @@ func main() {
 	// Registrar endpoints
 	router.HandleFunc("/tareas", controllers.CrearTarea).Methods("POST")
 	router.HandleFunc("/tareas", controllers.ObtenerTareas).Methods("GET")
+	router.HandleFunc("/tareas/{id}", controllers.ActualizarTarea).Methods("PUT")
+
 
 	// Ruta raíz de prueba
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

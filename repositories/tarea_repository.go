@@ -49,3 +49,27 @@ func ObtenerTodasTareas() ([]models.Tarea, error) {
 
 	return tareas, nil
 }
+
+func ActualizarTarea(id string, nuevaTarea models.Tarea) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	collection := config.GetCollection("tareas")
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"titulo":      nuevaTarea.Titulo,
+			"descripcion": nuevaTarea.Descripcion,
+			"completado":  nuevaTarea.Completado,
+		},
+	}
+
+	_, err = collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
+	return err
+}
+

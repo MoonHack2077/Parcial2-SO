@@ -14,3 +14,7 @@ func CrearTarea(tarea models.Tarea) (primitive.ObjectID, error) {
 func ObtenerTareas() ([]models.Tarea, error) {
 	return repositories.ObtenerTodasTareas()
 }
+
+func ActualizarTarea(id string, tarea models.Tarea) error {
+	return repositories.ActualizarTarea(id, tarea)
+}
