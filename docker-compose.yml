@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongo:
     image: mongo:6.0
@@ -9,6 +7,18 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - tareas-net
+
+  app:
+    build: .
+    container_name: microservicio-tareas
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
     networks:
       - tareas-net
 
