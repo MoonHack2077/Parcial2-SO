@@ -50,8 +50,13 @@ PORT=8080
 ```bash
 # O usar el script automatizado:
 ./automatizar.ps1     # Windows PowerShell
-# o
-./automatizar.sh      # Linux o WSL
+
+# o si estas en Linux o WSL
+# Asignar permisos de ejecución (solo una vez):
+chmod +x automatizar.sh
+
+# Ejecutar el script
+./automatizar.sh
 ```
 
 La app estará disponible en: [http://localhost:8080](http://localhost:8080)
@@ -84,11 +89,11 @@ go test -cover ./...
 ```
 
 - Cubre servicios: crear, obtener, actualizar y eliminar tareas
-- Reporte de cobertura generado con:
 
+📊 Reporte de cobertura generado:
+Archivo: coverage.out  
 ```bash
 go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
 ```
 
 ---
@@ -114,7 +119,7 @@ docker cp mongo:/data/db/backup-2025-04-04.gz ./backup-2025-04-04.gz
 
 ## 📐 Diagrama de Infraestructura
 
-Disponible en el archivo `infraestructura_microservicio.txtdoc`, representa:
+Disponible en el archivo `infraestructura_microservicio.pdf`, representa:
 
 - Cliente (Thunder Client)
 - Contenedor app (Golang)
