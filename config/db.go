@@ -13,7 +13,17 @@ import (
 var DB *mongo.Database
 
 func ConectarDB() {
-	mongoURI := os.Getenv("MONGO_URI")
+	env := os.Getenv("ENV")
+	var mongoURI string
+
+	if env == "dev" {
+		mongoURI = os.Getenv("MONGO_URI_TEST")
+		fmt.Println("🧪 Entorno de desarrollo: conectando a Mongo LOCAL")
+	} else {
+		mongoURI = os.Getenv("MONGO_URI")
+		fmt.Println("🚀 Entorno de producción: conectando a Mongo DOCKER")
+	}
+	
 	dbName := os.Getenv("MONGO_DB")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

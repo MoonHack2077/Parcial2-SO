@@ -1,6 +1,5 @@
 .env
 bin/
 *.exe
-*.out
 *.log
 vendor/
