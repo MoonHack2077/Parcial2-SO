@@ -58,6 +58,23 @@ La app estará disponible en: [http://localhost:8080](http://localhost:8080)
 
 ---
 
+## 🐳 Imagen en Docker Hub
+
+La imagen del microservicio fue construida y publicada en Docker Hub. Puede ser ejecutada en cualquier entorno compatible con Docker:
+
+🔗 **https://hub.docker.com/r/juanma1301/parcial2-so**
+
+### Para ejecutarla directamente:
+
+```bash
+docker pull juanma1301/parcial2-so
+docker run -p 8080:8080 --env-file .env juanma1301/parcial2-so
+```
+
+> Asegúrate de tener un archivo `.env` válido al momento de correr el contenedor.
+
+---
+
 ## 🧪 Pruebas
 
 ### Pruebas unitarias
@@ -80,7 +97,7 @@ go tool cover -html=coverage.out
 
 - Incluye todos los endpoints
 - Validaciones de estado, respuestas y estructura
-- Archivo de colección exportado: `ThunderCollection.json`
+- Archivo de colección exportado: `thunder-collection_parcial2.json`
 
 ---
 
@@ -116,6 +133,7 @@ Disponible en el archivo `infraestructura_microservicio.txtdoc`, representa:
 - Backup generado desde MongoDB
 - Diagrama de infraestructura
 - BONUS: Script de automatización (`automatizar.ps1` / `automatizar.sh`)
+- 🐳 Imagen publicada en Docker Hub: [juanma1301/parcial2-so](https://hub.docker.com/r/juanma1301/parcial2-so)
 
 ---
 
