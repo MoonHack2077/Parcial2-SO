@@ -29,6 +29,7 @@ jobs:
         with:
           image: juanma1301/parcial2-so:latest
           args: --severity-threshold=high
+        continue-on-error: false
 
       - name: Push Docker image
         run: docker push juanma1301/parcial2-so:latest
