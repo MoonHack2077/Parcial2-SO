@@ -12,7 +12,7 @@ COPY . .
 RUN go build -o app
 
 # Etapa 2: ejecución
-FROM gcr.io/distroless/base-debian10
+FROM gcr.io/distroless/base-debian12
 
 WORKDIR /
 
