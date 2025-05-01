@@ -1,7 +1,7 @@
 - name: Run container and verify it's working
   run: |
     echo "➡️ Lanzando contenedor de prueba..."
-    docker run -d --name test-container juanma1301/mi-repo:latest
+    docker run -d --name test-container juanma1301/parcial2-so:latest
 
     echo "⏳ Esperando a que arranque..."
     sleep 2
