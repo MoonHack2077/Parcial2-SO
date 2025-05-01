@@ -31,23 +31,25 @@ jobs:
           args: --severity-threshold=high
         continue-on-error: false
         
-      - name: Run container and verify it's working
+      - name: Run container and verify
         run: |
-          echo "➡️ Lanzando contenedor de prueba..."
-          docker run -d --name test-container juanma1301/parcial2-so:latest
+          echo "➡️ Lanzando contenedor con .env montado..."
+          docker run -d \
+            --name test-container \
+            -v ${{ github.workspace }}/.env:/app/.env \
+            juanma1301/parcial2-so:latest
       
-          echo "⏳ Esperando a que arranque..."
           sleep 2
       
-          echo "📦 Verificando que el contenedor está corriendo..."
           if ! docker ps | grep test-container; then
             echo "❌ El contenedor no se está ejecutando"
             docker logs test-container
             exit 1
           fi
       
-          echo "✅ Contenedor corriendo correctamente."
+          echo "✅ Contenedor corriendo correctamente"
           echo "🗣️ Hello world"
+
 
       - name: Push Docker image
         run: docker push juanma1301/parcial2-so:latest
