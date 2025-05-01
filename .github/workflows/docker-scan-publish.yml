@@ -36,7 +36,7 @@ jobs:
           echo "➡️ Lanzando contenedor con .env montado..."
           docker run -d \
             --name test-container \
-            -v ${{ github.workspace }}/.env:/app/.env \
+            -v ${{ github.workspace }}/.env:/.env \
             juanma1301/parcial2-so:latest
       
           sleep 2
