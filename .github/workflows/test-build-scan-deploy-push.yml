@@ -8,9 +8,6 @@ on:
 jobs:
   test-build-scan-push:
     runs-on: ubuntu-latest
-    env:
-      MONGO_URI: ${{ secrets.MONGO_URI }}
-      APP_ENV: production
 
     steps:
       - name: Checkout code
@@ -24,14 +21,10 @@ jobs:
       - name: Instalar dependencias
         run: go mod tidy
 
-      - name: Crear archivo .env desde secrets
-        run: |
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
-          echo "APP_ENV=testing" >> .env
-
       - name: Run tests with coverage
         run: |
-          go test -v -coverprofile=coverage.out ./...
+          echo "🏃 Ejecutando tests con MONGO_URI en entorno"
+          MONGO_URI="${{ secrets.MONGO_URI }}" APP_ENV=testing go test -v -coverprofile=coverage.out ./...
           go tool cover -func=coverage.out
 
       - name: Upload coverage report
@@ -60,10 +53,11 @@ jobs:
 
       - name: Run container and verify
         run: |
-          echo "➡️ Lanzando contenedor con .env montado..."
+          echo "➡️ Lanzando contenedor con variables de entorno"
           docker run -d \
             --name test-container \
-            --env-file .env \
+            -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+            -e APP_ENV=testing \
             -p 8080:8080 \
             juanma1301/parcial2-so:latest
 
