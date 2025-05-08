@@ -24,7 +24,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           echo "🏃 Ejecutando tests con MONGO_URI en entorno"
-          MONGO_URI="${{ secrets.MONGO_URI }}" APP_ENV=testing go test -v -coverprofile=coverage.out ./...
+          MONGO_URI="${{ secrets.MONGO_URI }}" MONGO_DB="${{ secrets.MONGO_DB }}" APP_ENV=testing go test -v -coverprofile=coverage.out ./...
           go tool cover -func=coverage.out
 
       - name: Upload coverage report
