@@ -12,7 +12,7 @@ import (
 
 func TestCrearTarea(t *testing.T) {
 	// Cargar .env
-	err := godotenv.Load("../.env")
+	err := godotenv.Load()
 	if err != nil {
 		t.Fatal("❌ No se pudo cargar el archivo .env")
 	}
