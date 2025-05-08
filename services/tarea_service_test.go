@@ -22,7 +22,7 @@ func TestCrearTarea(t *testing.T) {
 		// t.Fatal("❌ MONGO_URI está vacío o no cargado")
 	//}
 	
-	config.ConectarDB("tareas") // ← ESTA LÍNEA INICIALIZA LA CONEXIÓN
+	config.ConectarDB() // ← ESTA LÍNEA INICIALIZA LA CONEXIÓN
 
 	tarea := models.Tarea{
 		Titulo:      "Prueba",
