@@ -9,6 +9,13 @@ jobs:
   test-build-scan-push:
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: --health-cmd="mongosh --eval 'db.adminCommand(\"ping\")'" --health-interval=10s --health-timeout=5s --health-retries=5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,8 +30,11 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          echo "🏃 Ejecutando tests con MONGO_URI en entorno"
-          MONGO_URI="${{ secrets.MONGO_URI }}" MONGO_DB="${{ secrets.MONGO_DB }}" APP_ENV=testing go test -v -coverprofile=coverage.out ./...
+          echo "🏃 Ejecutando tests con Mongo local"
+          MONGO_URI="mongodb://localhost:27017/${{ secrets.MONGO_DB }}" \
+          MONGO_DB="${{ secrets.MONGO_DB }}" \
+          APP_ENV=testing \
+          go test -v -coverprofile=coverage.out ./...
           go tool cover -func=coverage.out
 
       - name: Upload coverage report
@@ -57,6 +67,7 @@ jobs:
           docker run -d \
             --name test-container \
             -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+            -e MONGO_DBNAME="${{ secrets.MONGO_DBNAME }}" \
             -e APP_ENV=testing \
             -p 8080:8080 \
             juanma1301/parcial2-so:latest
