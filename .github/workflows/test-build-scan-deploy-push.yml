@@ -1,0 +1,82 @@
+name: Build, Test, Scan and Push Docker image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-build-scan-push:
+    runs-on: ubuntu-latest
+    env:
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      APP_ENV: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Run tests with coverage
+        run: |
+          go test -v -coverprofile=coverage.out ./...
+          go tool cover -func=coverage.out
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.out
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t juanma1301/parcial2-so:latest .
+
+      - name: Scan Docker image with Snyk
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: juanma1301/parcial2-so:latest
+          args: --severity-threshold=high
+        continue-on-error: false
+
+      - name: Crear archivo .env desde secretos
+        run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+          echo "ENV=prod" >> .env
+
+      - name: Run container and verify
+        run: |
+          echo "➡️ Lanzando contenedor con .env montado..."
+          docker run -d \
+            --name test-container \
+            --env-file .env \
+            -p 8080:8080 \
+            juanma1301/parcial2-so:latest
+
+          sleep 5
+
+          echo "📡 Verificando respuesta del contenedor..."
+          curl -s http://localhost:8080 || (echo "❌ Fallo al contactar con el contenedor" && docker logs test-container && exit 1)
+
+          echo "✅ Contenedor corriendo correctamente"
+          echo "🗣️ Hello world"
+
+      - name: Tear down container
+        run: docker rm -f test-container
+
+      - name: Push Docker image
+        run: docker push juanma1301/parcial2-so:latest
