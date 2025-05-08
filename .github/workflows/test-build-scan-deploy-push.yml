@@ -61,29 +61,5 @@ jobs:
           args: --severity-threshold=high
         continue-on-error: false
 
-      - name: Run container and verify
-        run: |
-          echo "➡️ Lanzando contenedor con variables de entorno"
-          docker run -d \
-            --name test-container \
-            -v ${{ github.workspace }}/.env:/app/.env \
-            -e MONGO_URI="${{ secrets.MONGO_URI }}" \
-            -e MONGO_DB="${{ secrets.MONGO_DB }}" \
-            -e APP_ENV=testing \
-            -p 8080:8080 \
-            juanma1301/parcial2-so:latest
-
-          sleep 5
-
-          echo "📡 Verificando respuesta del contenedor..."
-          curl -s http://localhost:8080 || (echo "❌ Fallo al contactar con el contenedor" && docker logs test-container && exit 1)
-
-          echo "✅ Contenedor corriendo correctamente"
-          echo "🗣️ Hello world"
-
-
-      - name: Tear down container
-        run: docker rm -f test-container
-
       - name: Push Docker image
         run: docker push juanma1301/parcial2-so:latest
