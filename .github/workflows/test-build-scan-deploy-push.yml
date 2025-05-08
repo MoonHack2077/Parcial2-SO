@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "🏃 Ejecutando tests con Mongo local"
           MONGO_URI="mongodb://localhost:27017/${{ secrets.MONGO_DB }}" \
-          MONGO_DB="${{ secrets.MONGO_DB }}" \
+          MONGO_DBNAME="${{ secrets.MONGO_DB }}" \
           APP_ENV=testing \
           go test -v -coverprofile=coverage.out ./...
           go tool cover -func=coverage.out
@@ -66,8 +66,9 @@ jobs:
           echo "➡️ Lanzando contenedor con variables de entorno"
           docker run -d \
             --name test-container \
+            -v ${{ github.workspace }}/.env:/app/.env \
             -e MONGO_URI="${{ secrets.MONGO_URI }}" \
-            -e MONGO_DBNAME="${{ secrets.MONGO_DBNAME }}" \
+            -e MONGO_DB="${{ secrets.MONGO_DB }}" \
             -e APP_ENV=testing \
             -p 8080:8080 \
             juanma1301/parcial2-so:latest
