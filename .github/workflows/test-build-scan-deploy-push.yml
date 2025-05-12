@@ -84,3 +84,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  deploy:
+    runs-on: self-hosted
+    needs: test-build-scan-push
+  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Stop existing containers
+        run: docker compose down || true
+  
+      - name: Build and start services
+        run: docker compose up -d --build
+  
+      - name: Show running containers
+        run: docker ps
