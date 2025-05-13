@@ -91,6 +91,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Run tests with coverage
+        run: |
+          echo "🏃 Ejecutando docker"
+          MONGO_URI="mongodb://localhost:27017/${{ secrets.MONGO_DB }}" \
+          MONGO_DB="${{ secrets.MONGO_DB }}" \
+          APP_ENV=testing
   
       - name: Stop existing containers
         run: docker compose down || true
